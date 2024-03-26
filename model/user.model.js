@@ -1,6 +1,7 @@
 import { Schema, model, Types } from "mongoose";
+import bcrypt from "bcrypt";
 
-const userSchmea = new Schema(
+const userSchema = new Schema(
     {
         name: {
             type: String,
@@ -20,9 +21,25 @@ const userSchmea = new Schema(
             required: [true, "mobile is required"],
             unique: true,
         },
+        role: {
+            type: String,
+            enum: ["employer", "employee"],
+            default: "employee",
+        },
     },
     { timestamps: true }
 );
 
-const User = model("User", userSchmea);
+userSchema.pre("save", async function () {
+    if (this.isModified("password")) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+});
+
+userSchema.methods.comparePassword = async function (password) {
+    const verifyPassword = await bcrypt.compare(password, this.password);
+    return verifyPassword;
+};
+
+const User = model("User", userSchema);
 export default User;

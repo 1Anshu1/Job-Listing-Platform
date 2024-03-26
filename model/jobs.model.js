@@ -2,24 +2,55 @@ import { Schema, model, Types } from "mongoose";
 
 const jobSchema = new Schema(
     {
-        name: {
+        company: {
             type: String,
-            required: [true, "name is required"],
-        },
-        email: {
-            type: String,
-            required: [true, "email is required"],
+            required: [true, "company is required"],
             unique: true,
         },
-        password: {
+        logoUrl: {
             type: String,
-            required: [true, "password is required"],
+            required: [true, "logo is required"],
         },
-        mobile: {
+        position: {
             type: String,
-            required: [true, "mobile is required"],
-            unique: true,
+            required: [true, "position is required"],
         },
+        salary: {
+            type: Number,
+            required: [true, "salary is required"],
+        },
+        jobType: {
+            type: String,
+            required: [true, "job type is required"],
+        },
+        workMode: {
+            type: String,
+            enum: ["Office", "Remote", "Hybrid"],
+            required: [true, "work mode is required"],
+        },
+        location: {
+            type: String,
+            required: [true, "location is required"],
+        },
+        description: {
+            type: String,
+            required: [true, "description is required"],
+        },
+        aboutCompany: {
+            type: String,
+            required: [true, "aboutCompany is required"],
+        },
+        skills: {
+            type: [String],
+            required: [true, "skills is required"],
+        },
+        information: {
+            type: String
+        },
+        postedBy: {
+            type: Types.ObjectId,
+            ref: 'User'
+        }
     },
     { timestamps: true }
 );
