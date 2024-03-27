@@ -41,7 +41,7 @@ const getJob = asyncWrapper(async (req, res, next) => {
 
     const job = await Job.findOne({ _id: job_id });
     if (!job) {
-        throw next(new Custome(400, "job does not exist"));
+        throw next(new CustomError(400, "job does not exist"));
     }
     res.status(200).json({ message: "job found", job });
 });
@@ -63,11 +63,11 @@ const getAlljob = asyncWrapper(async (req, res, next) => {
 });
 
 const updateJob = asyncWrapper(async (req, res, next) => {
-    const job_id = req.user.id;
+    const job_id = req.params.id;
 
     const job = await Job.findOneAndUpdate({ _id: job_id }, req.body, { new: true });
     if (!job) {
-        throw next(new Custome(400, "job does not exist"));
+        throw next(new CustomError(400, "job does not exist"));
     }
     res.status(200).json({ message: "job updated successfully", job });
 });
@@ -77,7 +77,7 @@ const deleteJob = asyncWrapper(async (req, res, next) => {
 
     const job = await Job.findOneAndDelete({ _id: job_id });
     if (!job) {
-        throw next(new Custome(400, "job does not exist"));
+        throw next(new CustomError(400, "job does not exist"));
     }
     res.status(200).json({ message: "job deleted successfully" });
 });
